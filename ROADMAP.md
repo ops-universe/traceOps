@@ -1,9 +1,9 @@
 # Roadmap
 
-1. Foundation — merged, CI passed
-2. Core tracing — proposed in PR
-3. Instrumentation — proposed initial async wrapper
-4. Metrics — pending
+1. Foundation — merged
+2. Core tracing — merged
+3. Instrumentation — async wrapper merged; explicit lifecycle and hardening pending
+4. Metrics — proposed
 5. Storage — pending
 6. Diagnostics — pending
 7. Dashboard — pending

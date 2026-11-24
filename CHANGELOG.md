@@ -1,5 +1,6 @@
 # Changelog
 
 ## Unreleased
-- Versioned trace validation and synthetic demo (foundation merged).
-- Async tracing wrapper, bounded spans, duration, kind, error classification and opt-in metadata (proposed).
+- Foundation and versioned validation (PR #1 merged).
+- Async tracing and metadata controls (PR #2 merged).
+- Deterministic latency, error, tool and supplied usage metrics with explicit pricing estimates (proposed).

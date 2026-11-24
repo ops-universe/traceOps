@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {summarize} from '../src/metrics.mjs';
+const traceId='1'.repeat(32),spanId='2'.repeat(16);
+const trace={version:1,traceId,spans:[{traceId,spanId,parentSpanId:null,name:'root',startMs:0,endMs:100,status:'error'},{traceId,spanId:'3'.repeat(16),parentSpanId:spanId,name:'tool',kind:'tool',startMs:10,endMs:30,status:'ok'},{traceId,spanId:'4'.repeat(16),parentSpanId:spanId,name:'model',kind:'model',startMs:30,endMs:80,status:'ok',usage:{inputTokens:1000,outputTokens:500}}]};
+test('nearest rank latency and error metrics',()=>{const x=summarize([trace]);assert.deepEqual(x.spanLatencyMs,{p50:50,p95:100,p99:100});assert.equal(x.traceErrorRate,1);assert.equal(x.errorRate,1/3);assert.equal(x.toolCalls,1);assert.equal(x.costEstimate,null);});
+test('explicit prices and partial usage',()=>{const x=summarize([trace],{pricing:{inputPerMillion:2,outputPerMillion:4}});assert.equal(x.costEstimate.amount,.004);assert.equal(x.usage.reportedSpans,1);assert.equal(x.usage.missingSpans,2);});
+test('empty metrics have no fabricated latency or rate',()=>{const x=summarize([]);assert.equal(x.spanLatencyMs.p95,null);assert.equal(x.errorRate,null);});
+test('reject malformed usage, duplicate traces and invalid prices',()=>{assert.throws(()=>summarize([trace,trace]));assert.throws(()=>summarize([trace],{pricing:{inputPerMillion:-1,outputPerMillion:4}}));const x=structuredClone(trace);x.spans[2].usage.inputTokens=-1;assert.throws(()=>summarize([x]));});

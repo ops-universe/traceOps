@@ -1,3 +1,3 @@
 # Status
 
-Phase 1 merged, exact-head core and website checks passed. Phase 2–3 initial implementation proposed; CI unverified. Phases 4–9 pending. No full OTLP compatibility claim.
+PRs #1 and #2 merged after successful exact-head CI. Phase 3 wrapper merged, manual lifecycle and stronger redaction pending. Phase 4 metrics proposed; CI pending. Phases 5–9 pending.
