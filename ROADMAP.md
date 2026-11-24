@@ -1,11 +1,11 @@
 # Roadmap
 
-1. Foundation (proposed)
-2. Core tracing
-3. Instrumentation
-4. Metrics
-5. Storage
-6. Diagnostics
-7. Dashboard
-8. Synthetic scenarios
-9. Release
+1. Foundation — merged, CI passed
+2. Core tracing — proposed in PR
+3. Instrumentation — proposed initial async wrapper
+4. Metrics — pending
+5. Storage — pending
+6. Diagnostics — pending
+7. Dashboard — pending
+8. Synthetic scenarios — pending
+9. Release — pending
