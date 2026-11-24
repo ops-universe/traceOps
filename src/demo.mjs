@@ -1,0 +1,2 @@
+import {validateTrace} from './contracts.mjs';
+const traceId='1'.repeat(32);const trace={version:1,traceId,spans:[{traceId,spanId:'2'.repeat(16),parentSpanId:null,name:'synthetic request',startMs:0,endMs:20,status:'ok'}]};validateTrace(trace);console.log(JSON.stringify(trace,null,2));
