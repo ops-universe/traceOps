@@ -1,5 +1,4 @@
 # Resume
 
-Last verified main: 1adb134b93cc1dd23b130eb1a7e9f1179519e3de
-
-Phase 1 foundation branch feat/trace-foundation. Template governance and website scaffold adapted. Run npm ci, npm test, npm run demo; in website-react run npm ci, npm audit --audit-level=high and npm run build. Verify exact PR head and branch rules before merge. Next: core tracing lifecycle.
+Last verified main: 635588e89b2e9e47fc9b5ed13b36ffe2d4a1f0de
+Foundation PR #1 merged. Branch feat/core-instrumentation: core contracts, async nested spans and default metadata omission. Run npm ci && npm test; website-react npm ci, npm audit --audit-level=high, npm run build. Verify PR checks before merge. Next: explicit lifecycle, stronger redaction and metrics.

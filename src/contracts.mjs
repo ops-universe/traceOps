@@ -6,6 +6,10 @@ export function validateTrace(t){
  for(const s of t.spans){
  if(!s||!id(s.spanId,16)||map.has(s.spanId)||s.traceId!==t.traceId||typeof s.name!=='string'||!s.name.length||s.name.length>256||!Number.isSafeInteger(s.startMs)||s.startMs<0||!Number.isSafeInteger(s.endMs)||s.endMs<s.startMs||!['ok','error','unset'].includes(s.status))throw new TypeError('invalid span');
  if(s.parentSpanId!==null&&!id(s.parentSpanId,16))throw new TypeError('invalid parent');
+ if(s.durationMs!==undefined&&s.durationMs!==s.endMs-s.startMs)throw new TypeError('invalid duration');
+ if(s.kind!==undefined&&!['operation','model','tool','retrieval'].includes(s.kind))throw new TypeError('invalid kind');
+ if(s.errorCode!==undefined&&(!['error','timeout','cancelled'].includes(s.errorCode)||s.status!=='error'))throw new TypeError('invalid error classification');
+ if(s.metadata!==undefined){if(!s.metadata||Object.getPrototypeOf(s.metadata)!==Object.prototype)throw new TypeError('invalid metadata');for(const [k,v] of Object.entries(s.metadata)){if(!['model','provider','tool','correlationId'].includes(k)||typeof v!=='string'||!/^[a-zA-Z0-9_.:/-]{1,128}$/.test(v))throw new TypeError('invalid metadata field');}}
  map.set(s.spanId,s);
  }
  if(t.spans.filter(s=>s.parentSpanId===null).length!==1)throw new TypeError('expected one root');

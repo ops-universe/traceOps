@@ -1,0 +1,3 @@
+# Instrumentation
+
+`createTracer()` returns async `trace(name, fn)` and `span(name, fn)` wrappers. Trace returns result, failed flag, original error (in memory only) and validated trace record. Only the record is suitable for export. AsyncLocalStorage isolates concurrent traces; nested spans settle before parent closure. Metadata is omitted by default. Explicit allowlisted identifiers must be non-sensitive; custom redaction can reject values. Use static non-sensitive operation names. No raw prompts, outputs, error messages or stacks are recorded. No network calls. No claim of OTLP compatibility.
