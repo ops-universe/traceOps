@@ -1,4 +1,4 @@
 # Resume
 
-Last verified main: 635588e89b2e9e47fc9b5ed13b36ffe2d4a1f0de
-Foundation PR #1 merged. Branch feat/core-instrumentation: core contracts, async nested spans and default metadata omission. Run npm ci && npm test; website-react npm ci, npm audit --audit-level=high, npm run build. Verify PR checks before merge. Next: explicit lifecycle, stronger redaction and metrics.
+Last verified main: 89a5776df7fb0353392dc4b7b58be149fdcd4a5a
+PR #2 merged; branch feat/metrics contains Phase 4 metrics. Verify exact-head core and website checks and required reviews before merge. Run npm ci && npm test; in website-react run npm ci, npm audit --audit-level=high, npm run build. Next: explicit lifecycle and storage with bounded import and retention.

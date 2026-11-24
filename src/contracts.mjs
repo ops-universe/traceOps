@@ -10,6 +10,7 @@ export function validateTrace(t){
  if(s.kind!==undefined&&!['operation','model','tool','retrieval'].includes(s.kind))throw new TypeError('invalid kind');
  if(s.errorCode!==undefined&&(!['error','timeout','cancelled'].includes(s.errorCode)||s.status!=='error'))throw new TypeError('invalid error classification');
  if(s.metadata!==undefined){if(!s.metadata||Object.getPrototypeOf(s.metadata)!==Object.prototype)throw new TypeError('invalid metadata');for(const [k,v] of Object.entries(s.metadata)){if(!['model','provider','tool','correlationId'].includes(k)||typeof v!=='string'||!/^[a-zA-Z0-9_.:/-]{1,128}$/.test(v))throw new TypeError('invalid metadata field');}}
+ if(s.usage!==undefined){if(!s.usage||Object.getPrototypeOf(s.usage)!==Object.prototype||Object.keys(s.usage).some(k=>!['inputTokens','outputTokens'].includes(k))||Object.keys(s.usage).length!==2||!Object.values(s.usage).every(v=>Number.isSafeInteger(v)&&v>=0&&v<=1e9))throw new TypeError('invalid usage');}
  map.set(s.spanId,s);
  }
  if(t.spans.filter(s=>s.parentSpanId===null).length!==1)throw new TypeError('expected one root');
