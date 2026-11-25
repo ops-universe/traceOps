@@ -1,0 +1,3 @@
+# Diagnostics and manual lifecycle
+
+Use createTraceSession({allowedNames}) for explicit startSpan/end/finish; names are redacted unless explicitly allowlisted, metadata and raw errors are not recorded. Parent handles cannot cross sessions. Parents cannot end while children are active. The separate async wrapper still requires trusted static names and opt-in metadata. CLI: node src/cli.mjs inspect FILE TRACE_ID; compare FILE BEFORE_ID AFTER_ID; metrics FILE. Bottleneck ranking uses exclusive elapsed time (direct child interval union subtracted), not CPU time or critical-path proof. Timeline is recorded evidence only; it never reexecutes operations. Imported names may be sensitive; use trusted redacted files.
