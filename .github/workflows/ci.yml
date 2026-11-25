@@ -51,8 +51,11 @@ jobs:
       - run: npm ci
       - name: Install pinned browser test runner in isolated temporary project
         run: |
-          mkdir -p "$RUNNER_TEMP/traceops-browser"
-          npm install --prefix "$RUNNER_TEMP/traceops-browser" --no-audit --no-fund --save-exact @playwright/test@1.56.1
+          cp -r browser-runner "$RUNNER_TEMP/traceops-browser"
+          npm install --prefix "$RUNNER_TEMP/traceops-browser" --no-audit --no-fund --ignore-scripts
+          echo "BROWSER_LOCK_BEGIN"
+          cat "$RUNNER_TEMP/traceops-browser/package-lock.json"
+          echo "BROWSER_LOCK_END"
           npm audit --prefix "$RUNNER_TEMP/traceops-browser" --audit-level=high
           ln -s "$RUNNER_TEMP/traceops-browser/node_modules/@playwright" node_modules/@playwright
       - run: node node_modules/@playwright/test/cli.js install --with-deps chromium

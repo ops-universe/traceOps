@@ -1,4 +1,4 @@
 # Resume
 
-Last verified main: dbfb2b485d579d851cd4c2ed4a98ef99f0acdb23
-PRs #6 and #7 merged. Branch feat/acceptance-hardening adds functional acceptance tests and storage/instrumentation safeguards. Run npm ci && npm test; website-react npm ci, npm audit --audit-level=high, npm run build. Next: browser interaction and accessibility verification. Public release deferred. Merge only after exact-head checks and mandatory reviews pass.
+Last verified main: b8a4e1fd6c904c0823c52e1d7350206634736f96
+PR #9 branch feat/browser-acceptance: repair explicit labels; retrieve npm-generated browser runner lock from CI log between BROWSER_LOCK_BEGIN and BROWSER_LOCK_END, commit it and switch to npm ci. Verify all browser checks and mandatory gates before squash merge. Public release deferred.

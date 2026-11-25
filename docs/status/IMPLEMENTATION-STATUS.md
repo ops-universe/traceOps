@@ -1,3 +1,3 @@
 # Status
 
-PRs #1–7 merged. Functional dashboard and synthetic scenarios present on main. Acceptance hardening proposed; exact-head CI pending. Browser interactions still unverified. Public release and promotional website deferred. No live OTLP compatibility or production deployment claimed.
+PRs #1–8 merged. Main b8a4e1fd. Browser CI on PR #9 head 4a95c676 failed locating exact Status label in two tests. Explicit label association and keyboard regression proposed; runner lockfile generation and exact-head verification pending. Public release deferred.
