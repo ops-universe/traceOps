@@ -1,0 +1,3 @@
+# Functional acceptance
+
+Synthetic enterprise reports must round trip through local JSONL, filter failed spans, persist explicit retention, and import into the browser-safe parser without names or metadata. Unknown/redacted tool labels must not be interpreted as repeated identities. The async tracer must preserve parent timing across clock rollback. Storage writes require a trusted local directory and reject an existing symlink destination; this is not a defense against hostile concurrent directory mutation. No network calls or real customer records. Browser interaction tests are separate from core acceptance tests. Public release is deferred.
