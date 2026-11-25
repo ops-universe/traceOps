@@ -1,4 +1,4 @@
 # Resume
 
-Last verified main: b8a4e1fd6c904c0823c52e1d7350206634736f96
-PR #9 branch feat/browser-acceptance: repair explicit labels; retrieve npm-generated browser runner lock from CI log between BROWSER_LOCK_BEGIN and BROWSER_LOCK_END, commit it and switch to npm ci. Verify all browser checks and mandatory gates before squash merge. Public release deferred.
+Last verified main: afc09f7de857980b0f1d13c4bb32f2b17650dd25
+PRs #1–9 merged. Browser tests passed CI 45520531322. Branch feat/final-engineering-acceptance commits actual npm lockfile from job 138890929385, switches browser runner to npm ci and adds core audit. Verify exact-head checks, mandatory reviews and merge eligibility, then verify main CI. Reproduce root npm ci, npm audit --audit-level=high, npm test; website-react npm ci, npm audit --audit-level=high, npm run build; browser-runner npm ci and Chromium tests per workflow. Public release deferred. Trusted local directory required for storage; imported identifiers may still be sensitive; no live OTLP interoperability claim.

@@ -5,4 +5,5 @@
 - Browser trace explorer, redacted local imports and async name allowlist (PR #6 merged).
 - Synthetic enterprise scenarios (PR #7 merged).
 - Clock rollback handling, retention/filter bounds, symlink destination rejection and end-to-end acceptance (PR #8 merged).
-- Explicit dashboard control labels and browser keyboard regression checks (PR #9 proposed).
+- Explicit dashboard labels and browser keyboard regression (PR #9 merged; CI 45520531322 passed both browser tests).
+- npm-generated browser runner lockfile and clean locked CI installs; explicit core dependency audit (proposed).
