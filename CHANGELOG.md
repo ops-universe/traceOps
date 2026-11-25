@@ -4,4 +4,5 @@
 - Foundation (PR #1 merged).
 - Async tracing and metadata controls (PR #2 merged).
 - Deterministic metrics and explicit pricing (PR #3 merged).
-- Bounded local JSONL import/export, filtering and retention (proposed).
+- Local bounded JSONL storage and retention (PR #4 merged).
+- Explicit manual span lifecycle, trace diagnostics, comparison and CLI (proposed).

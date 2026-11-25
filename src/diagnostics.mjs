@@ -1,0 +1,9 @@
+import {validateTrace} from './contracts.mjs';
+export function inspectTrace(trace,{limit=10}={}){
+ validateTrace(trace);if(!Number.isInteger(limit)||limit<1||limit>100)throw new TypeError('invalid limit');
+ const root=trace.spans.find(s=>s.parentSpanId===null),counts=new Map(),children=new Map();
+ const rows=trace.spans.map(s=>{if(s.kind==='tool'){const key=s.metadata?.tool??s.name;counts.set(key,(counts.get(key)??0)+1);}if(s.parentSpanId!==null){const list=children.get(s.parentSpanId)??[];list.push(s);children.set(s.parentSpanId,list);}return {spanId:s.spanId,parentSpanId:s.parentSpanId,name:s.name,kind:s.kind??'operation',status:s.status,startOffsetMs:s.startMs-root.startMs,durationMs:s.endMs-s.startMs,...(s.errorCode?{errorCode:s.errorCode}:{})};});
+ const byId=new Map(trace.spans.map(s=>[s.spanId,s]));const ranked=rows.map(row=>{const s=byId.get(row.spanId);const ranges=(children.get(row.spanId)??[]).map(c=>[Math.max(c.startMs,s.startMs),Math.min(c.endMs,s.endMs)]).filter(([a,b])=>b>a).sort((a,b)=>a[0]-b[0]);let total=0,end=s.startMs;for(const [a,b] of ranges){total+=Math.max(0,b-Math.max(a,end));end=Math.max(end,b);}return {...row,exclusiveMs:row.durationMs-total};}).sort((a,b)=>b.exclusiveMs-a.exclusiveMs||a.spanId.localeCompare(b.spanId));
+ return {traceId:trace.traceId,durationMs:root.endMs-root.startMs,failedSpans:rows.filter(s=>s.status==='error'),bottlenecks:ranked.slice(0,limit),repeatedTools:[...counts].filter(([,n])=>n>1).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([tool,count])=>({tool,count})),timeline:rows.sort((a,b)=>a.startOffsetMs-b.startOffsetMs||a.spanId.localeCompare(b.spanId))};
+}
+export function compareTraces(before,after){const a=inspectTrace(before),b=inspectTrace(after);return {before:a.traceId,after:b.traceId,durationDeltaMs:b.durationMs-a.durationMs,failedSpanDelta:b.failedSpans.length-a.failedSpans.length,spanCountDelta:b.timeline.length-a.timeline.length};}
