@@ -1,0 +1,3 @@
+# Local trace dashboard
+
+Run npm ci and npm run dev in website-react. Trace explorer includes a synthetic example, bounded local JSONL import, trace selection, status filtering, waterfall, hierarchy depth, error details, exclusive duration and reported usage charts. Imported names and metadata are removed before display; tool identities cannot be inferred from redacted labels. Files stay in memory and no network upload or replay is performed. No persistence. Browser interaction and accessibility evidence pending. Async tracer names now require explicit allowedNames configuration; use trusted static names and never put secrets in opted-in metadata. CLI/storage imports still require trusted redacted data.
