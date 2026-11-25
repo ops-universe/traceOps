@@ -1,0 +1,17 @@
+import {open, rename, unlink} from 'node:fs/promises';
+import {constants} from 'node:fs';
+import {randomBytes} from 'node:crypto';
+import {validateTrace} from './contracts.mjs';
+const MAX=8*1024*1024, LINE=1024*1024, COUNT=1000;
+const spanKeys=['traceId','spanId','parentSpanId','name','startMs','endMs','status','durationMs','kind','errorCode','metadata','usage'];
+function project(t){validateTrace(t);return {version:t.version,traceId:t.traceId,spans:t.spans.map(s=>Object.fromEntries(spanKeys.filter(k=>Object.hasOwn(s,k)).map(k=>[k,s[k]])))};}
+export function decodeJSONL(text){
+ if(typeof text!=='string'||Buffer.byteLength(text)>MAX)throw new RangeError('input limit');
+ const lines=text.split('\n').filter(s=>s.trim());if(lines.length>COUNT)throw new RangeError('trace count limit');
+ const seen=new Set();return lines.map(line=>{if(Buffer.byteLength(line)>LINE)throw new RangeError('line limit');const t=project(JSON.parse(line));if(seen.has(t.traceId))throw new TypeError('duplicate trace');seen.add(t.traceId);return t;});
+}
+export function encodeJSONL(traces){if(!Array.isArray(traces)||traces.length>COUNT)throw new RangeError('trace count limit');let size=0;const seen=new Set();return traces.map(x=>{const t=project(x);if(seen.has(t.traceId))throw new TypeError('duplicate trace');seen.add(t.traceId);const line=JSON.stringify(t)+'\n';const bytes=Buffer.byteLength(line);size+=bytes;if(bytes>LINE||size>MAX)throw new RangeError('output limit');return line;}).join('');}
+export async function loadTraces(path){const f=await open(path,constants.O_RDONLY|constants.O_NOFOLLOW|constants.O_NONBLOCK);try{const stat=await f.stat();if(!stat.isFile()||stat.size>MAX)throw new RangeError('not a bounded regular file');const b=Buffer.alloc(MAX+1);let n=0;while(n<b.length){const x=await f.read(b,n,b.length-n,null);if(!x.bytesRead)break;n+=x.bytesRead;}if(n>MAX)throw new RangeError('input limit');return decodeJSONL(new TextDecoder('utf-8',{fatal:true}).decode(b.subarray(0,n)));}finally{await f.close();}}
+export async function saveTraces(path,traces){const content=encodeJSONL(traces);const temp=path+'.'+randomBytes(8).toString('hex')+'.tmp';const f=await open(temp,'wx',0o600);try{try{await f.writeFile(content);await f.sync();}finally{await f.close();}await rename(temp,path);}catch(e){await unlink(temp).catch(()=>{});throw e;}}
+export function filterTraces(traces,{traceId,status,name,sinceMs}={}){return traces.filter(t=>{validateTrace(t);return (!traceId||t.traceId===traceId)&&t.spans.some(s=>(status===undefined||s.status===status)&&(name===undefined||s.name.includes(name))&&(sinceMs===undefined||s.startMs>=sinceMs));});}
+export function retainTraces(traces,{cutoffMs,maxTraces=COUNT}){if(!Number.isSafeInteger(cutoffMs)||cutoffMs<0||!Number.isInteger(maxTraces)||maxTraces<0||maxTraces>COUNT)throw new TypeError('invalid retention');return traces.map(t=>{validateTrace(t);return {t,end:Math.max(...t.spans.map(s=>s.endMs))};}).filter(x=>x.end>=cutoffMs).sort((a,b)=>b.end-a.end||a.t.traceId.localeCompare(b.t.traceId)).slice(0,maxTraces).map(x=>x.t);}

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Foundation and versioned validation (PR #1 merged).
+- Foundation (PR #1 merged).
 - Async tracing and metadata controls (PR #2 merged).
-- Deterministic latency, error, tool and supplied usage metrics with explicit pricing estimates (proposed).
+- Deterministic metrics and explicit pricing (PR #3 merged).
+- Bounded local JSONL import/export, filtering and retention (proposed).

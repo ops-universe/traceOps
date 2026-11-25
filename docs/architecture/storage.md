@@ -1,0 +1,3 @@
+# Local storage
+
+JSONL import/export supports up to 8 MiB, 1 MiB per line and 1000 traces. Read only regular files; final symlinks rejected on supported POSIX systems. Atomic replacement uses a private temporary file in the destination directory. Callers must choose trusted local directories; concurrent writers are not supported. Unknown top-level and span fields are discarded. Known metadata and span names may still contain sensitive information; import only trusted/redacted data. Retention is explicit: retainTraces followed by saveTraces. No automatic deletion, external transport or hidden telemetry.
