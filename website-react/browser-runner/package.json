@@ -1,0 +1,8 @@
+{
+  "name": "traceops-browser-tests",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}
