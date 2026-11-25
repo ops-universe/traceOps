@@ -36,3 +36,24 @@ jobs:
           test -f dist/index.html
           VITE_BASE_PATH=/traceOps/ npm run build
           grep -q '/traceOps/assets/' dist/index.html
+  browser-acceptance:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: website-react
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Install pinned browser test runner in isolated temporary project
+        run: |
+          mkdir -p "$RUNNER_TEMP/traceops-browser"
+          npm install --prefix "$RUNNER_TEMP/traceops-browser" --no-audit --no-fund --save-exact @playwright/test@1.56.1
+          npm audit --prefix "$RUNNER_TEMP/traceops-browser" --audit-level=high
+          ln -s "$RUNNER_TEMP/traceops-browser/node_modules/@playwright" node_modules/@playwright
+      - run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+      - run: node node_modules/@playwright/test/cli.js test
