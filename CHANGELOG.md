@@ -8,3 +8,5 @@
 - Explicit dashboard labels and browser keyboard regression (PR #9 merged).
 - Committed npm-generated browser runner lockfile, locked CI installs and core dependency audit (PR #10 merged; exact-head CI 45521228956 and post-merge main CI 45522142449 passed).
 - Reconciled engineering acceptance evidence and documented limitations. No public release.
+
+- Wave 1 re-verification: exact-main Core CI 45835216736 passed; documentation-only acceptance update, no product release.
